@@ -1,10 +1,8 @@
 import os
 import random
+import time
 
 import requests
-import logging
-
-import time
 
 from config import LOG_PATH, logger
 
@@ -54,6 +52,8 @@ class Browser:
 
     def _proccess(self, response):
         logger.info("[%s %s]: %s", response.request.method, response.status_code, response.url)
+        if response.history:
+            logger.debug("[History] %s", response.history)
         self.save_page(response)
         self.sleep()
 

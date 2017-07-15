@@ -23,7 +23,6 @@ import sqlite3
 from browser import Browser
 from detail_page import AliexpressPageParser
 from list_parser import ListParser
-from utils import BeautifulSoup, fix_url, get_db
 import config
 from config import logger
 import db
@@ -54,7 +53,7 @@ if __name__ == "__main__":
         logger.info("DEBUG MODE")
         try:
             os.remove(config.SQLITE_DB)
-            logger.info("Old db removed")
+            logger.info("old db removed")
         except OSError:
             pass
     try:

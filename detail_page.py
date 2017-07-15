@@ -3,8 +3,6 @@ from config import logger
 from utils import fix_url, origin_image, get_product_id_from_url, BeautifulSoup as BS
 
 
-
-
 class AliexpressPageParser:
 
     def __init__(self, browser, detail_url, max_comments=100, max_transactions=100):
@@ -51,6 +49,7 @@ class AliexpressPageParser:
                 if m:
                     text = m.group()
         except Exception as e:
+            logger.debug("tag: %s, attrs: %s", tag, attrs)
             logger.debug(e, exc_info=True)
         return text
 
@@ -130,7 +129,7 @@ class AliexpressPageParser:
                     comment["rating"] = start_css[start_css.find(":"):].strip("%")
                     comments.append(comment)
                 except Exception as e:
-                    logging.exception(e)
+                    logger.exception(e)
 
             if self.max_comments < len(comments):
                 logger.info("Stopped comments fetching by max_transactions")

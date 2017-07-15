@@ -1,7 +1,6 @@
 import json
 import os
 import sqlite3
-import logging
 import config
 from config import logger
 
