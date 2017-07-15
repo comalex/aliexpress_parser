@@ -1,24 +1,22 @@
 import re
-import logging
+from config import logger
+from utils import fix_url, origin_image, get_product_id_from_url, BeautifulSoup as BS
 
-from utils import fix_url, origin_image, BeautifulSoup as BS
 
-
-logger = logging.getLogger(__name__)
 
 
 class AliexpressPageParser:
 
-    def __init__(self, browser, product_id, detail_url, max_comments=100, max_transactions=100):
+    def __init__(self, browser, detail_url, max_comments=100, max_transactions=100):
         self.browser = browser
         self.max_comments = max_comments
         self.max_transactions = max_transactions
-        self.product_id = product_id
+        self.product_id = get_product_id_from_url(detail_url)
         self.detail_url = detail_url
         res = browser.get(fix_url(detail_url))
         self.main_page_soap = BS(res.text)
         self.item = {}
-    
+
     def run(self):
         """
           Call methods which has parse_ prefix
@@ -29,7 +27,7 @@ class AliexpressPageParser:
             try:
                 method()
             except Exception as e:
-                logging.exception(e)
+                logger.exception(e)
         
         return self.item
     
@@ -159,4 +157,5 @@ class AliexpressPageParser:
             if self.max_transactions < len(transactions):
                 logger.info("Stopped transactions fetching by max_transactions")
                 break
+
         self.save_param('transaction', transactions)

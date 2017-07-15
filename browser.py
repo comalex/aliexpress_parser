@@ -1,22 +1,25 @@
 import os
+import random
 
 import requests
 import logging
-from config import LOG_PATH
 
-logger = logging.getLogger(__name__)
+import time
+
+from config import LOG_PATH, logger
 
 
 class Browser:
     def __init__(self, ua=None, debug=False, use_debug_proxy=False):
         self.session = requests.Session()
         headers = {
-            'User-Agent': ua or 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:46.0) Gecko/20100101 Firefox/46.0',
+            'User-Agent': ua or '5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/603.2.5 (KHTML, like Gecko) Version/10.1.1 Safari/603.2.5',
             'Accept': "text/html,application/xhtml+xml,application/xml;",
             'Accept-Language': 'en-US,en;',
             'Accept-Encoding': 'gzip, deflate',
             'Connection': 'keep-alive',
             'Content-Type': 'application/x-www-form-urlencoded',
+
         }
         self.session.headers.update(headers)
         self.debug = debug
@@ -28,7 +31,6 @@ class Browser:
         self.log_folder = os.path.join(LOG_PATH, "html")
         if debug and not os.path.exists(self.log_folder):
             os.makedirs(self.log_folder)
-
 
     def charles_proxy(self):
         """
@@ -46,14 +48,22 @@ class Browser:
             with open(os.path.join(self.log_folder, "page.html"), "w") as f:
                 f.write(res.text)
 
+    def sleep(self, t=None):
+        #dummy function for sleep beetween  requests to not be blocked
+        time.sleep(t or random.uniform(0.5, 3))
+
+    def _proccess(self, response):
+        logger.info("[%s %s]: %s", response.request.method, response.status_code, response.url)
+        self.save_page(response)
+        self.sleep()
+
+
     def get(self, url, params=None):
         response = self.session.get(url, params=params or {})
-        logger.info("[GET %s]: %s", response.status_code, url)
-        self.save_page(response)
+        self._proccess(response)
         return response
 
     def post(self, url, params):
         response = self.session.post(url, data=params)
-        logger.info("[POST %s]: %s", response.status_code, url)
-        self.save_page(response)
+        self._proccess(response)
         return response

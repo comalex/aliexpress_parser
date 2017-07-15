@@ -3,8 +3,7 @@ import os
 import sqlite3
 import logging
 import config
-
-logger = logging.getLogger(__name__)
+from config import logger
 
 conn = None
 cursor = None

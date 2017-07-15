@@ -1,5 +1,7 @@
-from bs4 import BeautifulSoup as BS
+import os
 
+from bs4 import BeautifulSoup as BS
+from urllib.parse import urlparse
 
 
 class BS_P(BS):
@@ -19,6 +21,9 @@ def fix_url(url):
         url = "https:" + url
     return url
 
+
+def get_product_id_from_url(url):
+    return os.path.splitext(os.path.basename(urlparse(url).path))[0]
 
 def origin_image(url):
     pattern = ".jpg_"
