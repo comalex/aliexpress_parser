@@ -75,7 +75,7 @@ class AliexpressPageParser:
                 description[key.text.strip(":")] = val.text
                 descriptions.append(description)
             except Exception as e:
-                logger.exception(e)
+                logger.debug(e)
 
         self.save_param('description', descriptions)
 
@@ -128,7 +128,7 @@ class AliexpressPageParser:
                     comment["rating"] = start_css[start_css.find(":"):].strip("%")
                     comments.append(comment)
                 except Exception as e:
-                    logger.exception(e)
+                    logger.debug(e)
 
             if self.max_comments < len(comments):
                 logger.info("Stopped comments fetching by max_transactions")
