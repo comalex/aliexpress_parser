@@ -6,6 +6,9 @@ import sys
 import time
 
 LOG_PATH = "logs"
+if not os.path.exists(LOG_PATH):
+    os.makedirs(LOG_PATH)
+
 SQLITE_DB = "ali.db"
 SESSION_ID = "%d%d" % (time.time(), os.getpid())
 

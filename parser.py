@@ -47,7 +47,8 @@ if __name__ == "__main__":
     debug_proxy = args.debug_proxy
 
     levels = [logging.ERROR, logging.WARN, logging.INFO, logging.DEBUG]
-    logger.setLevel(levels[min(args.level, len(levels)-1)])
+
+    logger.handlers[0].setLevel(levels[min(args.level, len(levels)-1)]) # set level for console handler
 
     if debug:
         logger.info("DEBUG MODE")

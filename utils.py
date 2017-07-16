@@ -25,6 +25,7 @@ def fix_url(url):
 def get_product_id_from_url(url):
     return os.path.splitext(os.path.basename(urlparse(url).path))[0]
 
+
 def origin_image(url):
     pattern = ".jpg_"
     pos = url.find(pattern)

@@ -49,8 +49,7 @@ class AliexpressPageParser:
                 if m:
                     text = m.group()
         except Exception as e:
-            logger.debug("tag: %s, attrs: %s", tag, attrs)
-            logger.debug(e, exc_info=True)
+            logger.debug("PASS: tag: %s, attrs: %s", tag, attrs)
         return text
 
 
@@ -76,7 +75,7 @@ class AliexpressPageParser:
                 description[key.text.strip(":")] = val.text
                 descriptions.append(description)
             except Exception as e:
-                logging.exception(e)
+                logger.exception(e)
 
         self.save_param('description', descriptions)
 

@@ -17,8 +17,7 @@ class ListParser:
             try:
                 url_list = method(start_url)
             except Exception as e:
-                logger.debug(method)
-                logger.debug(e, exc_info=True)
+                logger.debug("Pass %s", method.__name__)
         return url_list
 
     def parse_sale_page(self, url):

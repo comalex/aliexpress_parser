@@ -43,8 +43,11 @@ class Browser:
 
     def save_page(self, res):
         if self.debug:
-            with open(os.path.join(self.log_folder, "page.html"), "w") as f:
-                f.write(res.text)
+            try:
+                with open(os.path.join(self.log_folder, "page.html"), "w") as f:
+                    f.write(str(res.text.encode('utf-8')))
+            except Exception as e:
+                logger.debug(e)
 
     def sleep(self, t=None):
         #dummy function for sleep beetween  requests to not be blocked
